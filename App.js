@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Button, Alert, TextInput, ScrollView, FlatList, TouchableOpacity, ActivityIndicator, ImageBackground, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Modal } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, TextInput, ScrollView, FlatList, TouchableOpacity, ActivityIndicator, ImageBackground, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Modal, Switch } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -7,7 +7,8 @@ export default function App() {
   const [inputFocused, setInputFocused] = useState(false);
   const fruits = ['apple', 'guava', 'orange', 'paw-paw', 'avacado pear', 'pine-apple', 'lemon',]
   const [loader, setLoader] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
   const data = [
     {name: 'David', age: 20, id: 1},
@@ -20,6 +21,10 @@ export default function App() {
       <Text>My Name is {item.name} and i'm {item.age} years old</Text>
     </View>
   )
+
+  const handleSwitch = () => {
+    setEnabled(prev => !prev)
+  }
 
 
   const renderHeader = () => (
@@ -49,6 +54,7 @@ export default function App() {
         <Text>Open Modal</Text>
       </TouchableOpacity>
       <Button title='Close Modal' onPress={() => setModalOpen(false)} />
+      <Switch thumbColor={enabled ? 'orange' : 'black'} trackColor={{true: 'white', }} value={enabled} onValueChange={handleSwitch} />
     </>
   );
 
@@ -68,7 +74,7 @@ export default function App() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: enabled ? 'orange' : '#fff'}]}>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -87,7 +93,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     paddingTop: 100,
     paddingBottom: 50,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
